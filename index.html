@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0055)file:///C:/Users/ben_1/Downloads/ea-pipeline-FINAL.html -->
+<!-- saved from url=(0057)file:///C:/Users/ben_1/Downloads/ea-pipeline-FINAL_1.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -376,14 +376,20 @@ const EJS_PUBLIC_KEY  = "ejvkITQkIVoCDqWAY";
 const EJS_SERVICE_ID  = "service_omy3yic";
 const EJS_TEMPLATE_ID = "template_rvbp4zf";
 
-// Initialise EmailJS once loaded
-if (typeof emailjs !== 'undefined') emailjs.init(EJS_PUBLIC_KEY);
-window.addEventListener('load', () => {
-  if (typeof emailjs !== 'undefined') emailjs.init(EJS_PUBLIC_KEY);
-});
+async function initEmailJS() {
+  if (typeof emailjs !== "undefined") { emailjs.init(EJS_PUBLIC_KEY); return; }
+  await new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    s.onload = () => { emailjs.init(EJS_PUBLIC_KEY); resolve(); };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+initEmailJS();
 
-function sendAlert(s) {
-  if (typeof emailjs === 'undefined') return;
+async function sendAlert(s) {
+  await initEmailJS();
   emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
     role: s.role, bu: s.bu, grade: s.grade, location: s.location,
     urgency: s.urgency, type: s.type, recruiter: s.recruiter,
