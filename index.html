@@ -439,23 +439,6 @@ tbody tr:hover td{background:var(--ea-blue-lt)}
   </div>
 </div>
 
-<script>
-const CORRECT_PASSWORD = "Sourcepass123!";
-function checkPassword() {
-  const input = document.getElementById("password-input").value;
-  if (input === CORRECT_PASSWORD) {
-    document.getElementById("password-gate").style.display = "none";
-    sessionStorage.setItem("ea_auth", "true");
-  } else {
-    document.getElementById("password-error").style.display = "block";
-    document.getElementById("password-input").value = "";
-    document.getElementById("password-input").focus();
-  }
-}
-if (sessionStorage.getItem("ea_auth") === "true") {
-  document.getElementById("password-gate").style.display = "none";
-}
-</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
@@ -693,6 +676,26 @@ function renderHistory() {
   }).join("");
 }
 
+</script>
+
+<script>
+const CORRECT_PASSWORD = "Sourcepass123!";
+function checkPassword() {
+  const val = document.getElementById("password-input").value;
+  if (val === CORRECT_PASSWORD) {
+    document.getElementById("password-gate").style.display = "none";
+    sessionStorage.setItem("ea_auth", "true");
+  } else {
+    document.getElementById("password-error").style.display = "block";
+    document.getElementById("password-input").value = "";
+    document.getElementById("password-input").focus();
+  }
+}
+window.addEventListener("DOMContentLoaded", function() {
+  if (sessionStorage.getItem("ea_auth") === "true") {
+    document.getElementById("password-gate").style.display = "none";
+  }
+});
 </script>
 </body>
 </html>
